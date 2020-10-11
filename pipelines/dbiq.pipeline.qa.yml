@@ -4,6 +4,8 @@ variables:
   - group: 'MyAppSecrets'
   - name : 'projectDirectory'
     value: ''
+  - name : 'tags'
+    value: '@regression and not (@ignore or @manual)'
 trigger:
 - none
 jobs:
