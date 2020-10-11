@@ -8,6 +8,8 @@ variables:
     value: '@regression and not (@ignore or @manual)'
 trigger:
 - none
+pr:
+- none
 jobs:
   - job: BuildAndroid
     displayName: ANDROID
