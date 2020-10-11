@@ -6,6 +6,8 @@ variables:
     value: ''
 trigger:
 - dev*
+pr:
+- dev*
 jobs:
   - job: BuildAndroid
     displayName: ANDROID
