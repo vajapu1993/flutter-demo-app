@@ -28,8 +28,8 @@ jobs:
         displayName: 'Run tests'
         env:
           tags: $(tags)
-          inputs:
-            arguments: 'drive --target=test_driver/app.dart'
+        inputs:
+          arguments: 'drive --target=test_driver/app.dart'
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
