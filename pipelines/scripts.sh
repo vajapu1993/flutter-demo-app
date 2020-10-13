@@ -16,7 +16,8 @@ install_flutter() {
 
 flutter_test() {
   flutter packages get
-  flutter drive --target=test_driver/app.dart
+  #flutter drive --target=test_driver/app.dart
+  dart test_driver/app_test.dart
 }
 
 start_android_emulator(){
