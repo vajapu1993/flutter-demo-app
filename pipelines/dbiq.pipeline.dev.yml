@@ -30,6 +30,7 @@ jobs:
           displayName: 'Run Widget test'
       - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration test'
+        continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
@@ -94,6 +95,7 @@ jobs:
           displayName: 'Run Widget test'
       - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration test'
+        continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
