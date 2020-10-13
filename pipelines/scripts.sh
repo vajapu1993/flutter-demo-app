@@ -13,10 +13,14 @@ install_flutter() {
   flutter doctor
 }
 
-flutter_test() {
+flutter_integration_test() {
   flutter packages get
-  #flutter drive --target=test_driver/app.dart
-  dart test_driver/app_test.dart $TAGS
+  tags=$TAGS flutter drive --target=test_driver/app.dart
+}
+
+flutter_widget_test() {
+  flutter packages get
+  flutter test
 }
 
 start_android_emulator(){
