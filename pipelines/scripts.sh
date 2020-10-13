@@ -13,9 +13,7 @@ install_flutter() {
 }
 
 envTes() {
-  echo 1$(tags)
-  echo 2$tags
-  echo 3$TAGS
+  dart lib/test.dart
 }
 
 flutter_test() {
