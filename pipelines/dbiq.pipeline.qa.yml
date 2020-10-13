@@ -25,9 +25,9 @@ jobs:
       - script: pipelines/scripts.sh flutter_widget_test
         displayName: 'Run Widget test'
       - task: FlutterCommand@0
-          displayName: 'Run tests'
-          env:
-            tags: $(tags)
+        displayName: 'Run tests'
+        env:
+          tags: $(tags)
           inputs:
             arguments: 'drive --target=test_driver/app.dart'
         continueOnError: true
