@@ -24,7 +24,7 @@ jobs:
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
       - script: pipelines/scripts.sh flutter_widget_test
-          displayName: 'Run Widget test'
+        displayName: 'Run Widget test'
       - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration test'
       - script: pipelines/scripts.sh generate_test_report
