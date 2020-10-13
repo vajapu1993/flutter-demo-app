@@ -16,5 +16,8 @@ jobs:
         inputs:
           channel: 'stable'
           version: 'latest'
+      - bash: |
+          FOO="runtime value"
+          echo "##vso[task.setvariable variable=FOO]$FOO"
       - script: '$(FlutterToolPath)/cache/dart-sdk/bin/dart lib/test.dart'
         displayName: 'Start android emulator'
