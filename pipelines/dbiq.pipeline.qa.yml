@@ -23,9 +23,9 @@ jobs:
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
       - task: FlutterCommand@0
-          displayName: 'Run tests'
-          inputs:
-            arguments: 'drive --target=test_driver/app.dart'
+        displayName: 'Run tests'
+        inputs:
+          arguments: 'drive --target=test_driver/app.dart'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
