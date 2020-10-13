@@ -28,6 +28,9 @@ jobs:
     - script: pipelines/scripts.sh start_android_emulator
       displayName: 'Start android emulator'
 
+    - script: |
+        echo '##vso[task.setvariable variable=tags]$(tags)'
+      displayName: Group test to run
     - task: FlutterCommand@0
       displayName: 'Run tests'
       inputs:
