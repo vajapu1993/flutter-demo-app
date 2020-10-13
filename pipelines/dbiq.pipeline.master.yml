@@ -91,8 +91,10 @@ jobs:
         displayName: 'Start iOS simulator'
       - script: pipelines/scripts.sh flutter_widget_test
         displayName: 'Run Widget test'
-      - script: pipelines/scripts.sh flutter_integration_test
-        displayName: 'Run Integration test'
+      - task: FlutterCommand@0
+          displayName: 'Run tests'
+          inputs:
+            arguments: 'drive --target=test_driver/app.dart'
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
