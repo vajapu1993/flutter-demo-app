@@ -2,6 +2,7 @@
 
 set -e
 export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
+export tags=$TAGS
 
 # All scripts will be placed here
 install_flutter() {
