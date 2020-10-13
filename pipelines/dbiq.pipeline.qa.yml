@@ -16,8 +16,16 @@ jobs:
         inputs:
           channel: 'stable'
           version: 'latest'
-      - bash: |
-          FOO="runtime value"
-          echo "##vso[task.setvariable variable=FOO]$FOO"
-      - script: '$(FlutterToolPath)/cache/dart-sdk/bin/dart lib/test.dart'
+      - task: FlutterBuild@0
+        inputs:
+          target: apk
+          projectDirectory: $(projectDirectory)
+      - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
+      - script: pipelines/scripts.sh flutter_test
+        displayName: 'Run test'
+      - script: pipelines/scripts.sh generate_test_report
+        displayName: 'Generate report'
+      - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
+        displayName: 'Saving reports'
+        artifact: reports_android

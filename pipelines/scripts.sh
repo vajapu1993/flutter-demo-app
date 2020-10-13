@@ -3,7 +3,6 @@
 set -e
 export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
 export PATH=$FLUTTERTOOLPATH:$FLUTTERTOOLPATH/cache/dart-sdk/bin:$PATH
-export tags=$TAGS
 
 # All scripts will be placed here
 install_flutter() {
@@ -17,7 +16,7 @@ install_flutter() {
 flutter_test() {
   flutter packages get
   #flutter drive --target=test_driver/app.dart
-  dart test_driver/app_test.dart
+  dart test_driver/app_test.dart $TAGS
 }
 
 start_android_emulator(){

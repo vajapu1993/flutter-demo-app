@@ -1,5 +1,5 @@
 import 'dart:io';
 
-void main(){
-  print(Platform.environment);
+void main({t1="nnb",t2="uyertuy"}){
+  print(t1);
 }
