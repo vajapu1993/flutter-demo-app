@@ -12,10 +12,6 @@ install_flutter() {
   flutter doctor
 }
 
-envTes() {
-  dart lib/test.dart
-}
-
 flutter_test() {
   flutter packages get
   flutter drive --target=test_driver/app.dart

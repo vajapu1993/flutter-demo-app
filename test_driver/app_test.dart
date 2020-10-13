@@ -7,6 +7,8 @@ import 'hooks/screenshot_hook.dart';
 import 'steps/tap_button_n_times_step.dart';
 
 Future<void> main() {
+  print('1 ${Platform.environment['TAGS']}');
+  print('2 ${Platform.environment['tags']}');
   final config = FlutterTestConfiguration()
     ..features = [Glob(r"test_driver/features/**.feature")]
     ..reporters = [
@@ -19,7 +21,7 @@ Future<void> main() {
     // ..customStepParameterDefinitions = [ColourParameter()]
     ..restartAppBetweenScenarios = true
     ..targetAppPath = "test_driver/app.dart"
-    ..tagExpression = Platform.environment['tags'] // uncomment to see an example of running scenarios based on tag expressions
+    ..tagExpression = Platform.environment['TAGS'] // uncomment to see an example of running scenarios based on tag expressions
     ..exitAfterTestRun = true; // set to false if debugging to exit cleanly
   return GherkinRunner().execute(config);
 }
