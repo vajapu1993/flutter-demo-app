@@ -97,6 +97,9 @@ jobs:
       - script: chmod a+x pipelines/scripts.sh
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
+      - script: |
+          echo '##vso[task.setvariable variable=tags]$(tags)'
+          displayName: Group test to run
       - task: FlutterCommand@0
         displayName: 'Run tests'
         inputs:
