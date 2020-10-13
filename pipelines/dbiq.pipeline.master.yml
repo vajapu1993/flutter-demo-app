@@ -28,8 +28,6 @@ jobs:
     - script: pipelines/scripts.sh start_android_emulator
       displayName: 'Start android emulator'
 
-    - script: |
-        echo '##vso[task.setvariable variable=tags]$(tags)'
     - task: FlutterCommand@0
       displayName: 'Run tests'
       inputs:
@@ -96,8 +94,6 @@ jobs:
       - script: chmod a+x pipelines/scripts.sh
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
-      - script: |
-          echo '##vso[task.setvariable variable=tags]$(tags)'
       - task: FlutterCommand@0
         displayName: 'Run tests'
         inputs:
