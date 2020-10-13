@@ -14,4 +14,4 @@ jobs:
     pool:
       vmImage: 'macOS-latest'
     steps:
-    - script: pipelines/scripts.sh envTes
+    - script: dart lib/test.dart
