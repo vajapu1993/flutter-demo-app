@@ -12,6 +12,12 @@ install_flutter() {
   flutter doctor
 }
 
+envTes() {
+  echo $(tags)
+  echo $tags
+  echo $TAGS
+}
+
 flutter_test() {
   flutter packages get
   flutter drive --target=test_driver/app.dart
