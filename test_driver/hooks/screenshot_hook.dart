@@ -16,7 +16,6 @@ class AttachScreenshot extends Hook {
 
   Future<String> takeScreenshot(World world) async {
     final bytes = await (world as FlutterWorld).driver.screenshot();
-
     return base64Encode(bytes);
   }
 }
