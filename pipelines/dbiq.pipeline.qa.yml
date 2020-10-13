@@ -82,7 +82,7 @@ jobs:
         displayName: 'Start iOS simulator'
       - script: |
           echo '##vso[task.setvariable variable=tags]$(tags)'
-          displayName: Group test to run
+        displayName: Group test to run
       - task: FlutterCommand@0
         displayName: 'Run tests'
         inputs:
