@@ -24,10 +24,16 @@ jobs:
         projectDirectory: $(projectDirectory)
     - script: pipelines/scripts.sh start_android_emulator
       displayName: 'Start android emulator'
-    - script: pipelines/scripts.sh flutter_widget_test
-      displayName: 'Run Widget test'
-    - script: pipelines/scripts.sh flutter_integration_test
-      displayName: 'Run Integration test'
+    - task: FlutterCommand@0
+      displayName: 'Run Widget tests'
+      inputs:
+        arguments: 'test'
+    - task: FlutterCommand@0
+      displayName: 'Run Integration tests'
+      env:
+        tags: $(tags)
+      inputs:
+        arguments: 'drive --target=test_driver/app.dart'
       continueOnError: true
     - script: pipelines/scripts.sh generate_test_report
       displayName: 'Generate report'
@@ -89,12 +95,16 @@ jobs:
           iosCodesign: false
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
-      - script: pipelines/scripts.sh flutter_widget_test
-        displayName: 'Run Widget test'
       - task: FlutterCommand@0
-          displayName: 'Run tests'
-          inputs:
-            arguments: 'drive --target=test_driver/app.dart'
+        displayName: 'Run Widget tests'
+        inputs:
+          arguments: 'test'
+      - task: FlutterCommand@0
+        displayName: 'Run Integration tests'
+        env:
+          tags: $(tags)
+        inputs:
+          arguments: 'drive --target=test_driver/app.dart'
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
