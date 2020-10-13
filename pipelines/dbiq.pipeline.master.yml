@@ -22,7 +22,6 @@ jobs:
       inputs:
         target: apk
         projectDirectory: $(projectDirectory)
-    - script: chmod a+x pipelines/scripts.sh
     - script: pipelines/scripts.sh start_android_emulator
       displayName: 'Start android emulator'
     - script: pipelines/scripts.sh flutter_widget_test
@@ -88,7 +87,6 @@ jobs:
           projectDirectory: '.'
           buildName: '$(Build.BuildNumber)'
           iosCodesign: false
-      - script: chmod a+x pipelines/scripts.sh
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
       - script: pipelines/scripts.sh flutter_widget_test
