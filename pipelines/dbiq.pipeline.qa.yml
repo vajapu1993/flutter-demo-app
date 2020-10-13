@@ -16,22 +16,16 @@ jobs:
         inputs:
           channel: 'stable'
           version: 'latest'
-
       - task: FlutterBuild@0
         inputs:
           target: apk
           projectDirectory: $(projectDirectory)
-
-      - script: chmod a+x pipelines/scripts.sh
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
-      - task: FlutterCommand@0
+      - script: pipelines/scripts.sh flutter_test
         displayName: 'Run tests'
-        inputs:
-          arguments: 'drive --target=test_driver/app.dart'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
-
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_android
