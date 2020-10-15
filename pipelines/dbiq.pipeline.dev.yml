@@ -56,7 +56,7 @@ jobs:
           tags: $(tags)
         inputs:
           arguments: 'devices && echo($tags)'
-          continueOnError: true
+        continueOnError: true
       - task: FlutterCommand@0
         displayName: 'Run Integration tests'
         env:
