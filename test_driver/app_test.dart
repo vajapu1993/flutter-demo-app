@@ -7,6 +7,8 @@ import 'hooks/screenshot_hook.dart';
 import 'steps/tap_button_n_times_step.dart';
 
 Future<void> main() {
+  final reportPath = "./test_driver/reports";
+  new Directory(reportPath).create(recursive: true);
   final config = FlutterTestConfiguration()
     ..features = [Glob(r"test_driver/features/**.feature")]
     ..reporters = [
