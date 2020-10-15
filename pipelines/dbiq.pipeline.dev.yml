@@ -3,61 +3,12 @@ name: $(Date:yyyyMMdd)$(Rev:r)
 variables:
   - group: 'MyAppSecrets'
   - name : 'projectDirectory'
-    value: ''
+    value: '$(Build.Repository.LocalPath)'
 trigger:
   - dev*
 pr:
   - develop
 jobs:
-  - job: BuildAndroid
-    displayName: ANDROID
-    pool:
-      vmImage: 'macOS-latest'
-    steps:
-      - task: FlutterInstall@0
-        inputs:
-          channel: 'stable'
-          version: 'latest'
-
-      - task: FlutterBuild@0
-        inputs:
-          target: apk
-          projectDirectory: $(projectDirectory)
-      - script: pipelines/scripts.sh start_android_emulator
-        displayName: 'Start android emulator'
-#      - task: FlutterCommand@0
-#        displayName: 'Run Widget tests'
-#        inputs:
-#          arguments: 'test'
-      - task: FlutterCommand@0
-        displayName: 'Run Integration tests'
-        env:
-          tags: $(tags)
-        inputs:
-          arguments: 'drive --target=test_driver/app.dart'
-        continueOnError: true
-      - script: pipelines/scripts.sh generate_test_report
-        displayName: 'Generate report'
-      - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
-        displayName: 'Saving reports'
-        artifact: reports_android
-      - task: AndroidSigning@3
-        displayName: 'Signing and aligning APK file(s) **/*.apk'
-        inputs:
-          apkFiles: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
-          apksignerKeystoreFile: 'key.jks'
-          apksign: true
-          apksignerKeystorePassword: $(keypassword)
-          apksignerKeystoreAlias: $(key)
-          apksignerKeyPassword: $(keypassword)
-      - task: CopyFiles@2
-        inputs:
-          contents: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
-          targetFolder: '$(build.artifactStagingDirectory)/android'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: 'drop'
-
   - job: BuildIOS
     displayName: IOS
     pool:
@@ -100,6 +51,13 @@ jobs:
 #        inputs:
 #          arguments: 'test'
       - task: FlutterCommand@0
+          displayName: 'device'
+          env:
+            tags: $(tags)
+          inputs:
+            arguments: 'devices && echo($tags)'
+          continueOnError: true
+      - task: FlutterCommand@0
         displayName: 'Run Integration tests'
         env:
           tags: $(tags)
@@ -111,26 +69,3 @@ jobs:
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_ios
-      - task: Xcode@5
-        displayName: Package and sign app
-        inputs:
-          actions: 'build'
-          configuration: 'Release'
-          sdk: 'iphoneos'
-          xcWorkspacePath: 'ios/Runner.xcworkspace'
-          scheme: 'Runner'
-          packageApp: true
-          # exportPath: '$(System.ArtifactsDirectory)'
-          # exportOptions: 'plist'
-          # exportMethod: 'development'
-          # exportOptionsPlist: 'ios/exportOptions.plist'
-          signingOption: 'manual'
-          signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-          provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
-      - task: CopyFiles@2
-        inputs:
-          contents: '$(Build.Repository.LocalPath)/**/*.ipa'
-          targetFolder: '$(build.artifactStagingDirectory)/ios'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: 'drop'
