@@ -3,11 +3,9 @@ name: $(Date:yyyyMMdd)$(Rev:r)
 variables:
   - group: 'MyAppSecrets'
   - name : 'projectDirectory'
-    value: '$(Build.Repository.LocalPath)'
-trigger:
-  - dev*
+    value: ''
 pr:
-  - develop
+  - dev*
 jobs:
   - job: BuildIOS
     displayName: IOS
@@ -46,26 +44,40 @@ jobs:
           iosCodesign: false
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
-#      - task: FlutterCommand@0
-#        displayName: 'Run Widget tests'
-#        inputs:
-#          arguments: 'test'
-      - task: FlutterCommand@0
-        displayName: 'device'
-        env:
-          tags: $(tags)
-        inputs:
-          arguments: 'flutter devices'
-        continueOnError: true
-      - task: FlutterCommand@0
+      #      - task: FlutterCommand@0
+      #        displayName: 'Run Widget tests'
+      #        inputs:
+      #          arguments: 'test'
+      - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration tests'
         env:
           tags: $(tags)
-        inputs:
-          arguments: 'flutter drive --target=test_driver/app.dart'
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_ios
+      - task: Xcode@5
+        displayName: Package and sign app
+        inputs:
+          actions: 'build'
+          configuration: 'Release'
+          sdk: 'iphoneos'
+          xcWorkspacePath: 'ios/Runner.xcworkspace'
+          scheme: 'Runner'
+          packageApp: true
+          # exportPath: '$(System.ArtifactsDirectory)'
+          # exportOptions: 'plist'
+          # exportMethod: 'development'
+          # exportOptionsPlist: 'ios/exportOptions.plist'
+          signingOption: 'manual'
+          signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+          provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+      - task: CopyFiles@2
+        inputs:
+          contents: '$(Build.Repository.LocalPath)/**/*.ipa'
+          targetFolder: '$(build.artifactStagingDirectory)/ios'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          artifactName: 'drop'

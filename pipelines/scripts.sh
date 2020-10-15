@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -e
-export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
+#export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
 export PATH=$FLUTTERTOOLPATH:$FLUTTERTOOLPATH/cache/dart-sdk/bin:$PATH
 
 # All scripts will be placed here
