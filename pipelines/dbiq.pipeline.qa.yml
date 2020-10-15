@@ -4,43 +4,41 @@ variables:
   - group: 'MyAppSecrets'
   - name : 'projectDirectory'
     value: ''
-  - name : 'tags'
-    value: '@regression and not (@ignore or @manual)'
 trigger:
-- none
-pr:
-- none
+  - none
 jobs:
   - job: BuildAndroid
     displayName: ANDROID
     pool:
       vmImage: 'macOS-latest'
     steps:
-    - task: FlutterInstall@0
-      inputs:
-        channel: 'stable'
-        version: 'latest'
-    
-    - task: FlutterBuild@0
-      inputs:
-        target: apk
-        projectDirectory: $(projectDirectory)
+      - task: FlutterInstall@0
+        inputs:
+          channel: 'stable'
+          version: 'latest'
+      - task: FlutterBuild@0
+        inputs:
+          target: apk
+          projectDirectory: $(projectDirectory)
+      - script: pipelines/scripts.sh start_android_emulator
+        displayName: 'Start android emulator'
+      - task: FlutterCommand@0
+        displayName: 'Run Widget tests'
+        inputs:
+          arguments: 'test'
+      - task: FlutterCommand@0
+        displayName: 'Run Integration tests'
+        env:
+          tags: $(tags)
+        inputs:
+          arguments: 'drive --target=test_driver/app.dart'
+        continueOnError: true
+      - script: pipelines/scripts.sh generate_test_report
+        displayName: 'Generate report'
+      - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
+        displayName: 'Saving reports'
+        artifact: reports_android
 
-    - script: chmod a+x pipelines/scripts.sh
-    - script: pipelines/scripts.sh start_android_emulator
-      displayName: 'Start android emulator'
-
-    - task: FlutterCommand@0
-      displayName: 'Run tests'
-      inputs:
-        arguments: 'drive --target=test_driver/app.dart'
-    - script: pipelines/scripts.sh generate_test_report
-      displayName: 'Generate report'
-
-    - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
-      displayName: 'Saving reports'
-      artifact: reports_android
-        
   - job: BuildIOS
     displayName: IOS
     pool:
@@ -76,13 +74,19 @@ jobs:
           projectDirectory: '.'
           buildName: '$(Build.BuildNumber)'
           iosCodesign: false
-      - script: chmod a+x pipelines/scripts.sh
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
       - task: FlutterCommand@0
-        displayName: 'Run tests'
+        displayName: 'Run Widget tests'
+        inputs:
+          arguments: 'test'
+      - task: FlutterCommand@0
+        displayName: 'Run Integration tests'
+        env:
+          tags: $(tags)
         inputs:
           arguments: 'drive --target=test_driver/app.dart'
+        continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
