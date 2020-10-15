@@ -25,10 +25,10 @@ jobs:
           projectDirectory: $(projectDirectory)
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
-      - task: FlutterCommand@0
-        displayName: 'Run Widget tests'
-        inputs:
-          arguments: 'test'
+#      - task: FlutterCommand@0
+#        displayName: 'Run Widget tests'
+#        inputs:
+#          arguments: 'test'
       - task: FlutterCommand@0
         displayName: 'Run Integration tests'
         env:
@@ -95,10 +95,10 @@ jobs:
           iosCodesign: false
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
-      - task: FlutterCommand@0
-        displayName: 'Run Widget tests'
-        inputs:
-          arguments: 'test'
+#      - task: FlutterCommand@0
+#        displayName: 'Run Widget tests'
+#        inputs:
+#          arguments: 'test'
       - task: FlutterCommand@0
         displayName: 'Run Integration tests'
         env:
