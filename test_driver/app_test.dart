@@ -12,7 +12,7 @@ Future<void> main() {
     ..reporters = [
       ProgressReporter(),
       TestRunSummaryReporter(),
-      JsonReporter(path: './test_driver/reports/report.json')
+      JsonReporter(path: 'test_driver/reports/report.json')
     ] // you can include the "StdoutReporter()" without the message level parameter for verbose log information
     ..hooks = [AttachScreenshot()]
     ..stepDefinitions = [TapButtonNTimesStep()]
