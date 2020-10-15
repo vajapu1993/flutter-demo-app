@@ -51,11 +51,11 @@ jobs:
 #        inputs:
 #          arguments: 'test'
       - task: FlutterCommand@0
-          displayName: 'device'
-          env:
-            tags: $(tags)
-          inputs:
-            arguments: 'devices && echo($tags)'
+        displayName: 'device'
+        env:
+          tags: $(tags)
+        inputs:
+          arguments: 'devices && echo($tags)'
           continueOnError: true
       - task: FlutterCommand@0
         displayName: 'Run Integration tests'
