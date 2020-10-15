@@ -55,14 +55,14 @@ jobs:
         env:
           tags: $(tags)
         inputs:
-          arguments: 'devices && echo($tags)'
+          arguments: 'flutter devices'
         continueOnError: true
       - task: FlutterCommand@0
         displayName: 'Run Integration tests'
         env:
           tags: $(tags)
         inputs:
-          arguments: 'drive --target=test_driver/app.dart'
+          arguments: 'flutter drive --target=test_driver/app.dart'
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
