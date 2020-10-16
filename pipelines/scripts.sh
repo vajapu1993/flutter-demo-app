@@ -15,7 +15,7 @@ install_flutter() {
 
 flutter_integration_test() {
   flutter packages get
-  tags=$TAGS flutter drive --target=test_driver/app.dart
+  tags=$TAGS flutter drive --target=test_driver/app.dart --verbose
 }
 
 flutter_widget_test() {
