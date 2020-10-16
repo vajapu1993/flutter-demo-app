@@ -18,10 +18,6 @@ jobs:
         inputs:
           channel: 'stable'
           version: 'latest'
-#      - task: FlutterBuild@0
-#        inputs:
-#          target: apk
-#          projectDirectory: $(projectDirectory)
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
 #     - task: FlutterCommand@0
@@ -35,10 +31,15 @@ jobs:
         continueOnError: true
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
-
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_android
+      - script: pipelines/scripts.sh flutter_clean
+        displayName: 'Clean build'
+      - task: FlutterBuild@0
+        inputs:
+          target: apk
+          projectDirectory: $(projectDirectory)
       - task: AndroidSigning@3
         displayName: 'Signing and aligning APK file(s) **/*.apk'
         inputs:
@@ -84,19 +85,12 @@ jobs:
         inputs:
           channel: 'stable'
           version: 'latest'
-      - task: FlutterBuild@0
-        displayName: Build app
-        inputs:
-          target: 'ios'
-          projectDirectory: '.'
-          buildName: '$(Build.BuildNumber)'
-          iosCodesign: false
       - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
         displayName: 'Start iOS simulator'
-      #      - task: FlutterCommand@0
-      #        displayName: 'Run Widget tests'
-      #        inputs:
-      #          arguments: 'test'
+      #- task: FlutterCommand@0
+      #  displayName: 'Run Widget tests'
+      #  inputs:
+      #    arguments: 'test'
       - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration tests'
         env:
@@ -107,6 +101,15 @@ jobs:
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_ios
+      - script: pipelines/scripts.sh flutter_clean
+        displayName: 'Clean build'
+      - task: FlutterBuild@0
+        displayName: Build app
+        inputs:
+          target: 'ios'
+          projectDirectory: '.'
+          buildName: '$(Build.BuildNumber)'
+          iosCodesign: false
       - task: Xcode@5
         displayName: Package and sign app
         inputs:

@@ -13,6 +13,10 @@ install_flutter() {
   flutter doctor
 }
 
+flutter_clean() {
+  flutter clean
+}
+
 flutter_integration_test() {
   flutter packages get
   tags=$TAGS flutter drive --target=test_driver/app.dart --verbose
