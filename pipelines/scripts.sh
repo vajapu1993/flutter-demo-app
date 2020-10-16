@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -e
-export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
+#export PATH=$BUILD_SOURCESDIRECTORY/flutter/bin:$BUILD_SOURCESDIRECTORY/flutter/bin/cache/dart-sdk/bin:$PATH
 export PATH=$FLUTTERTOOLPATH:$FLUTTERTOOLPATH/cache/dart-sdk/bin:$PATH
 
 # All scripts will be placed here
@@ -13,9 +13,13 @@ install_flutter() {
   flutter doctor
 }
 
+flutter_clean() {
+  flutter clean
+}
+
 flutter_integration_test() {
   flutter packages get
-  tags=$TAGS flutter drive --target=test_driver/app.dart
+  tags=$TAGS flutter drive --target=test_driver/app.dart --verbose
 }
 
 flutter_widget_test() {

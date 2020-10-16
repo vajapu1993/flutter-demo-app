@@ -7,12 +7,14 @@ import 'hooks/screenshot_hook.dart';
 import 'steps/tap_button_n_times_step.dart';
 
 Future<void> main() {
+  final reportPath = "./test_driver/reports";
+  new Directory(reportPath).create(recursive: true);
   final config = FlutterTestConfiguration()
     ..features = [Glob(r"test_driver/features/**.feature")]
     ..reporters = [
       ProgressReporter(),
       TestRunSummaryReporter(),
-      JsonReporter(path: './test_driver/reports/report.json')
+      JsonReporter(path: 'test_driver/reports/report.json')
     ] // you can include the "StdoutReporter()" without the message level parameter for verbose log information
     ..hooks = [AttachScreenshot()]
     ..stepDefinitions = [TapButtonNTimesStep()]

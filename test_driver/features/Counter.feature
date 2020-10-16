@@ -7,7 +7,7 @@ Feature: Counter
     When I tap the "increment" button 10 times
     Then I expect the "counter" to be "10"
 
-  @smoke @regression
+  @regression
   Scenario: Counter decreases when the negate button is pressed
     When I tap the "increment" button 10 times
     Given I expect the "counter" to be "10"
