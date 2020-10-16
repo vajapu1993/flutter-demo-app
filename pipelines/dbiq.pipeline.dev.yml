@@ -4,6 +4,8 @@ variables:
   - group: 'MyAppSecrets'
   - name : 'projectDirectory'
     value: ''
+trigger:
+  - none
 pr:
   - dev*
 jobs:
