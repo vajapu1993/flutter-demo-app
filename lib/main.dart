@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      // if(_counter>0)
+      if(_counter>0)
         _counter--;
     });
   }
@@ -124,14 +124,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
 
             //This is for adding decrement
-            // Padding(padding: EdgeInsets.only(left:31),
-            //   child: Align(
-            //     alignment: Alignment.bottomLeft,
-            //     child: FloatingActionButton(
-            //       onPressed: _decrementCounter,
-            //       key: Key('decrement'),
-            //       child: Icon(Icons.remove),),
-            //   ),),
+            Padding(padding: EdgeInsets.only(left:31),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: FloatingActionButton(
+                  onPressed: _decrementCounter,
+                  key: Key('decrement'),
+                  child: Icon(Icons.remove),),
+              ),),
 
             Align(
               alignment: Alignment.bottomRight,
