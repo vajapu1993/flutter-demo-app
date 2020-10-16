@@ -124,14 +124,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
 
             //This is for adding decrement
-            Padding(padding: EdgeInsets.only(left:31),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: FloatingActionButton(
-                  onPressed: _decrementCounter,
-                  key: Key('decrement'),
-                  child: Icon(Icons.remove),),
-              ),),
+            // Padding(padding: EdgeInsets.only(left:31),
+            //   child: Align(
+            //     alignment: Alignment.bottomLeft,
+            //     child: FloatingActionButton(
+            //       onPressed: _decrementCounter,
+            //       key: Key('decrement'),
+            //       child: Icon(Icons.remove),),
+            //   ),),
 
             Align(
               alignment: Alignment.bottomRight,
