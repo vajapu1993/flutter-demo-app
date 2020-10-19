@@ -4,6 +4,7 @@ import 'package:flutter_gherkin/flutter_gherkin.dart';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
 import 'hooks/screenshot_hook.dart';
+import 'hooks/status_hook.dart';
 import 'steps/tap_button_n_times_step.dart';
 
 Future<void> main() {
@@ -16,7 +17,7 @@ Future<void> main() {
       TestRunSummaryReporter(),
       JsonReporter(path: 'test_driver/reports/report.json')
     ] // you can include the "StdoutReporter()" without the message level parameter for verbose log information
-    ..hooks = [AttachScreenshot()]
+    ..hooks = [AttachScreenshot(),GetStatus()]
     ..stepDefinitions = [TapButtonNTimesStep()]
     // ..customStepParameterDefinitions = [ColourParameter()]
     ..restartAppBetweenScenarios = true
