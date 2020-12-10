@@ -11,7 +11,6 @@ install_flutter() {
   flutter precache
   yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
   flutter doctor
-  pub global activate junitreport
 }
 
 flutter_clean() {
@@ -64,7 +63,6 @@ function start_iOS_simulator()
 }
 
 generate_test_report() {
-  pub global run junitreport:tojunit --input test_driver/reports/report.json --output test_driver/reports/TEST-report.xml
   npm install multiple-cucumber-html-reporter
   node pipelines/reporter.js
   find test_driver/reports -type f -name "*.html" -print0 | xargs -0 sed -i '' "s/<.*created-by.*>//g"
