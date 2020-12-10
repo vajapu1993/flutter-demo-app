@@ -19,8 +19,7 @@ flutter_clean() {
 
 flutter_integration_test() {
   flutter packages get
-  tags=$TAGS flutter drive --target=test_driver/app.dart --verbose
-  pub global run junitreport:tojunit --input test_driver/reports/report.json --output TEST-report.xml
+  tags=$TAGS flutter drive --target=test_driver/app.dart --verbose --reporter test_driver/reports/report.json | tojunit
 }
 
 flutter_widget_test() {
