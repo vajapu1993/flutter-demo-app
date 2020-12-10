@@ -29,14 +29,14 @@ jobs:
         env:
           tags: $(tags)
         continueOnError: true
-      # - task: PublishTestResults@2
-      #   inputs:
-      #     testResultsFormat: 'JUnit'
-      #     testResultsFiles: '**/TEST-*.xml'
-      #     searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
-      #     testRunTitle: 'Bottomline Tests'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
+          testRunTitle: 'Bottomline Android Tests'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_android
@@ -102,14 +102,14 @@ jobs:
         env:
           tags: $(tags)
         continueOnError: true
-      # - task: PublishTestResults@2
-      #   inputs:
-      #     testResultsFormat: 'JUnit'
-      #     testResultsFiles: '**/TEST-*.xml'
-      #     searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
-      #     testRunTitle: 'Bottomline Tests'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
+          testRunTitle: 'Bottomline Android Tests'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
         displayName: 'Saving reports'
         artifact: reports_ios
