@@ -1,7 +1,10 @@
 const cucumberJunitConvert = require('cucumber-junit-convert');
+var path = require('path');
+var jsonPath = path.join(__dirname, '..', 'test_driver', 'reports');
  
 const options = {
-    inputJsonFile: 'test_driver/report/report.json',
-    outputXmlFile: 'test_driver/report/report.xml'
+    inputJsonFile: jsonPath + '/report.json',
+    outputXmlFile: jsonPath + '/report.xml'
+}
  
 cucumberJunitConvert.convert(options);
