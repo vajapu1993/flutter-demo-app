@@ -64,7 +64,9 @@ function start_iOS_simulator()
 
 generate_test_report() {
   npm install multiple-cucumber-html-reporter
+  npm install cucumber-junit-convert
   node pipelines/reporter.js
+  node pipelines/xmlreporter.js
   find test_driver/reports -type f -name "*.html" -print0 | xargs -0 sed -i '' "s/<.*created-by.*>//g"
   find test_driver/reports -type f -name "*.html" -print0 | xargs -0 sed -i '' "s/<.*\"http.*>//g"
   find test_driver/reports -type f -name "*.html" -print0 | xargs -0 sed -i '' "s/<.*Created.*>//g"
