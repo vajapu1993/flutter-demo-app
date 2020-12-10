@@ -20,21 +20,21 @@ jobs:
           version: 'latest'
       - script: pipelines/scripts.sh start_android_emulator
         displayName: 'Start android emulator'
-#     - task: FlutterCommand@0
-#       displayName: 'Run Widget tests'
-#       inputs:
-#          arguments: 'test'
+    # - task: FlutterCommand@0
+    #   displayName: 'Run Widget tests'
+    #   inputs:
+    #      arguments: 'test'
       - script: pipelines/scripts.sh flutter_integration_test
         displayName: 'Run Integration tests'
         env:
           tags: $(tags)
         continueOnError: true
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/TEST-*.xml'
-          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
-          testRunTitle: 'Bottomline Tests'
+      # - task: PublishTestResults@2
+      #   inputs:
+      #     testResultsFormat: 'JUnit'
+      #     testResultsFiles: '**/TEST-*.xml'
+      #     searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
+      #     testRunTitle: 'Bottomline Tests'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
@@ -102,12 +102,12 @@ jobs:
         env:
           tags: $(tags)
         continueOnError: true
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/TEST-*.xml'
-          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
-          testRunTitle: 'Bottomline Tests'
+      # - task: PublishTestResults@2
+      #   inputs:
+      #     testResultsFormat: 'JUnit'
+      #     testResultsFiles: '**/TEST-*.xml'
+      #     searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports/report.json'
+      #     testRunTitle: 'Bottomline Tests'
       - script: pipelines/scripts.sh generate_test_report
         displayName: 'Generate report'
       - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
