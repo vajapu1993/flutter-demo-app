@@ -45,7 +45,7 @@ jobs:
           ConnectionDetailsSelection: 'Credentials'
           apiId: '8b8b59f21892ac0040b730a6ef9eb6c7'
           apiKey: 'dd33db1c4967c2f5c5bc6e2e882b2c20fc5ae428452074f71a51e46c0aefc1056e6d6a2cc3070c51dd19f24e70764517c9340c2d2700c91f0f3fb871fda550a8'
-          veracodeAppProfile: '$(system.teamProject)'
+          veracodeAppProfile: 'DBIQ Mobile Android'
           version: '$(build.buildNumber)'
           filepath: '$(Build.Repository.LocalPath)/build/app/outputs/apk/debug/app-debug.apk'
           sandboxName: 'Demo BlueSky Sandbox'
