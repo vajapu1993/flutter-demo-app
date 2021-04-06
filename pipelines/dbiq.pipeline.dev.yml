@@ -14,153 +14,159 @@ jobs:
     pool:
       vmImage: 'macOS-latest'
     steps:
-      - task: FlutterInstall@0
+      - task: CmdLine@2
         inputs:
-          channel: 'stable'
-          version: 'latest'
-      - script: pipelines/scripts.sh start_android_emulator
-        displayName: 'Start android emulator'
-    # - task: FlutterCommand@0
-    #   displayName: 'Run Widget tests'
-    #   inputs:
-    #      arguments: 'test'
-      - script: pipelines/scripts.sh flutter_integration_test
-        displayName: 'Run Integration tests'
-        env:
-          tags: $(tags)
-        continueOnError: true
-      - script: pipelines/scripts.sh generate_test_report
-        displayName: 'Generate report'
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/*.xml'
-          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
-          testRunTitle: 'Bottomline Android Tests'
-      - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
-        displayName: 'Saving reports'
-        artifact: reports_android
-      - task: CopyFiles@2
-        inputs:
-          contents: '$(Build.Repository.LocalPath)/build/app/outputs/apk/debug/app-debug.apk'
-          targetFolder: '$(build.artifactStagingDirectory)/android'
-      # - task: Veracode@3
-      #   inputs:
-      #     ConnectionDetailsSelection: 'Credentials'
-      #     apiId: '8b8b59f21892ac0040b730a6ef9eb6c7'
-      #     apiKey: 'dd33db1c4967c2f5c5bc6e2e882b2c20fc5ae428452074f71a51e46c0aefc1056e6d6a2cc3070c51dd19f24e70764517c9340c2d2700c91f0f3fb871fda550a8'
-      #     veracodeAppProfile: 'DBIQ Mobile Android'
-      #     version: '$(build.buildNumber)'
-      #     filepath: '$(Build.Repository.LocalPath)/build/app/outputs/apk/debug/app-debug.apk'
-      #     sandboxName: 'Demo BlueSky Sandbox'
-      #     createSandBox: false
-      #     createProfile: false
-      #     failTheBuildIfVeracodeScanDidNotInitiate: false
-      #     scanStatusCheckInterval: '60'
-      #     importResults: true
-      #     failBuildOnPolicyFail: true' 
-      - script: pipelines/scripts.sh flutter_clean
-        displayName: 'Clean build'
-      - task: FlutterBuild@0
-        inputs:
-          target: apk
-          projectDirectory: $(projectDirectory)
-      - task: AndroidSigning@3
-        displayName: 'Signing and aligning APK file(s) **/*.apk'
-        inputs:
-          apkFiles: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
-          apksignerKeystoreFile: 'key.jks'
-          apksign: true
-          apksignerKeystorePassword: $(keypassword)
-          apksignerKeystoreAlias: $(key)
-          apksignerKeyPassword: $(keypassword)
-      - task: CopyFiles@2
-        inputs:
-          contents: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
-          targetFolder: '$(build.artifactStagingDirectory)/android'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: 'drop'
+          script: |
+            echo $(keypassword)
+            echo $(key)
+            echo $(iosP12password)
+  #     - task: FlutterInstall@0
+  #       inputs:
+  #         channel: 'stable'
+  #         version: 'latest'
+  #     - script: pipelines/scripts.sh start_android_emulator
+  #       displayName: 'Start android emulator'
+  #   # - task: FlutterCommand@0
+  #   #   displayName: 'Run Widget tests'
+  #   #   inputs:
+  #   #      arguments: 'test'
+  #     - script: pipelines/scripts.sh flutter_integration_test
+  #       displayName: 'Run Integration tests'
+  #       env:
+  #         tags: $(tags)
+  #       continueOnError: true
+  #     - script: pipelines/scripts.sh generate_test_report
+  #       displayName: 'Generate report'
+  #     - task: PublishTestResults@2
+  #       inputs:
+  #         testResultsFormat: 'JUnit'
+  #         testResultsFiles: '**/*.xml'
+  #         searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
+  #         testRunTitle: 'Bottomline Android Tests'
+  #     - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
+  #       displayName: 'Saving reports'
+  #       artifact: reports_android
+  #     - task: CopyFiles@2
+  #       inputs:
+  #         contents: '$(Build.Repository.LocalPath)/build/app/outputs/apk/debug/app-debug.apk'
+  #         targetFolder: '$(build.artifactStagingDirectory)/android'
+  #     # - task: Veracode@3
+  #     #   inputs:
+  #     #     ConnectionDetailsSelection: 'Credentials'
+  #     #     apiId: '8b8b59f21892ac0040b730a6ef9eb6c7'
+  #     #     apiKey: 'dd33db1c4967c2f5c5bc6e2e882b2c20fc5ae428452074f71a51e46c0aefc1056e6d6a2cc3070c51dd19f24e70764517c9340c2d2700c91f0f3fb871fda550a8'
+  #     #     veracodeAppProfile: 'DBIQ Mobile Android'
+  #     #     version: '$(build.buildNumber)'
+  #     #     filepath: '$(Build.Repository.LocalPath)/build/app/outputs/apk/debug/app-debug.apk'
+  #     #     sandboxName: 'Demo BlueSky Sandbox'
+  #     #     createSandBox: false
+  #     #     createProfile: false
+  #     #     failTheBuildIfVeracodeScanDidNotInitiate: false
+  #     #     scanStatusCheckInterval: '60'
+  #     #     importResults: true
+  #     #     failBuildOnPolicyFail: true' 
+  #     - script: pipelines/scripts.sh flutter_clean
+  #       displayName: 'Clean build'
+  #     - task: FlutterBuild@0
+  #       inputs:
+  #         target: apk
+  #         projectDirectory: $(projectDirectory)
+  #     - task: AndroidSigning@3
+  #       displayName: 'Signing and aligning APK file(s) **/*.apk'
+  #       inputs:
+  #         apkFiles: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
+  #         apksignerKeystoreFile: 'key.jks'
+  #         apksign: true
+  #         apksignerKeystorePassword: $(keypassword)
+  #         apksignerKeystoreAlias: $(key)
+  #         apksignerKeyPassword: $(keypassword)
+  #     - task: CopyFiles@2
+  #       inputs:
+  #         contents: '$(Build.Repository.LocalPath)/build/app/outputs/apk/release/*.apk'
+  #         targetFolder: '$(build.artifactStagingDirectory)/android'
+  #     - task: PublishBuildArtifacts@1
+  #       inputs:
+  #         artifactName: 'drop'
 
-  - job: BuildIOS
-    displayName: IOS
-    pool:
-      vmImage: 'macOS-latest'
-    steps:
-      - task: InstallAppleCertificate@2
-        displayName: Install Apple distribution certificate
-        inputs:
-          certSecureFile: 'my_cert.p12'
-          certPwd: '$(iosP12password)'
-          keychain: 'temp'
-      - task: InstallAppleProvisioningProfile@1
-        displayName: Install ad-hoc distribution profile
-        inputs:
-          provisioningProfileLocation: 'secureFiles'
-          provProfileSecureFile: 'BlueSky_InHouse_Certificate.mobileprovision'
-      # - task: DownloadSecureFile@1
-      #   displayName: Get GoogleService-Info.plist
-      #   name: googleServicesInfoPlist
-      #   inputs:
-      #     secureFile: 'GoogleService-Info.plist'
-      # - pwsh: Move-Item $(googleServicesInfoPlist.secureFilePath) ios/Runner/ -Force
-      #   displayName: Override GoogleService-Info.plist
-      - task: FlutterInstall@0
-        displayName: Install Flutter
-        inputs:
-          channel: 'stable'
-          version: 'latest'
-      - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
-        displayName: 'Start iOS simulator'
-      #- task: FlutterCommand@0
-      #  displayName: 'Run Widget tests'
-      #  inputs:
-      #    arguments: 'test'
-      - script: pipelines/scripts.sh flutter_integration_test
-        displayName: 'Run Integration tests'
-        env:
-          tags: $(tags)
-        continueOnError: true
-      - script: pipelines/scripts.sh generate_test_report
-        displayName: 'Generate report'
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/*.xml'
-          searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
-          testRunTitle: 'Bottomline Android Tests'
-      - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
-        displayName: 'Saving reports'
-        artifact: reports_ios
-      - script: pipelines/scripts.sh flutter_clean
-        displayName: 'Clean build'
-      - task: FlutterBuild@0
-        displayName: Build app
-        inputs:
-          target: 'ios'
-          projectDirectory: '.'
-          buildName: '$(Build.BuildNumber)'
-          iosCodesign: false
-      - task: Xcode@5
-        displayName: Package and sign app
-        inputs:
-          actions: 'build'
-          configuration: 'Release'
-          sdk: 'iphoneos'
-          xcWorkspacePath: 'ios/Runner.xcworkspace'
-          scheme: 'Runner'
-          packageApp: true
-          # exportPath: '$(System.ArtifactsDirectory)'
-          # exportOptions: 'plist'
-          # exportMethod: 'development'
-          # exportOptionsPlist: 'ios/exportOptions.plist'
-          signingOption: 'manual'
-          signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-          provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
-      - task: CopyFiles@2
-        inputs:
-          contents: '$(Build.Repository.LocalPath)/**/*.ipa'
-          targetFolder: '$(build.artifactStagingDirectory)/ios'
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: 'drop'
+  # - job: BuildIOS
+  #   displayName: IOS
+  #   pool:
+  #     vmImage: 'macOS-latest'
+  #   steps:
+  #     - task: InstallAppleCertificate@2
+  #       displayName: Install Apple distribution certificate
+  #       inputs:
+  #         certSecureFile: 'my_cert.p12'
+  #         certPwd: '$(iosP12password)'
+  #         keychain: 'temp'
+  #     - task: InstallAppleProvisioningProfile@1
+  #       displayName: Install ad-hoc distribution profile
+  #       inputs:
+  #         provisioningProfileLocation: 'secureFiles'
+  #         provProfileSecureFile: 'BlueSky_InHouse_Certificate.mobileprovision'
+  #     # - task: DownloadSecureFile@1
+  #     #   displayName: Get GoogleService-Info.plist
+  #     #   name: googleServicesInfoPlist
+  #     #   inputs:
+  #     #     secureFile: 'GoogleService-Info.plist'
+  #     # - pwsh: Move-Item $(googleServicesInfoPlist.secureFilePath) ios/Runner/ -Force
+  #     #   displayName: Override GoogleService-Info.plist
+  #     - task: FlutterInstall@0
+  #       displayName: Install Flutter
+  #       inputs:
+  #         channel: 'stable'
+  #         version: 'latest'
+  #     - script: pipelines/scripts.sh start_iOS_simulator 'iPhone 8'
+  #       displayName: 'Start iOS simulator'
+  #     #- task: FlutterCommand@0
+  #     #  displayName: 'Run Widget tests'
+  #     #  inputs:
+  #     #    arguments: 'test'
+  #     - script: pipelines/scripts.sh flutter_integration_test
+  #       displayName: 'Run Integration tests'
+  #       env:
+  #         tags: $(tags)
+  #       continueOnError: true
+  #     - script: pipelines/scripts.sh generate_test_report
+  #       displayName: 'Generate report'
+  #     - task: PublishTestResults@2
+  #       inputs:
+  #         testResultsFormat: 'JUnit'
+  #         testResultsFiles: '**/*.xml'
+  #         searchFolder: '$(System.DefaultWorkingDirectory)/test_driver/reports'
+  #         testRunTitle: 'Bottomline Android Tests'
+  #     - publish: $(System.DefaultWorkingDirectory)/test_driver/reports
+  #       displayName: 'Saving reports'
+  #       artifact: reports_ios
+  #     - script: pipelines/scripts.sh flutter_clean
+  #       displayName: 'Clean build'
+  #     - task: FlutterBuild@0
+  #       displayName: Build app
+  #       inputs:
+  #         target: 'ios'
+  #         projectDirectory: '.'
+  #         buildName: '$(Build.BuildNumber)'
+  #         iosCodesign: false
+  #     - task: Xcode@5
+  #       displayName: Package and sign app
+  #       inputs:
+  #         actions: 'build'
+  #         configuration: 'Release'
+  #         sdk: 'iphoneos'
+  #         xcWorkspacePath: 'ios/Runner.xcworkspace'
+  #         scheme: 'Runner'
+  #         packageApp: true
+  #         # exportPath: '$(System.ArtifactsDirectory)'
+  #         # exportOptions: 'plist'
+  #         # exportMethod: 'development'
+  #         # exportOptionsPlist: 'ios/exportOptions.plist'
+  #         signingOption: 'manual'
+  #         signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+  #         provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+  #     - task: CopyFiles@2
+  #       inputs:
+  #         contents: '$(Build.Repository.LocalPath)/**/*.ipa'
+  #         targetFolder: '$(build.artifactStagingDirectory)/ios'
+  #     - task: PublishBuildArtifacts@1
+  #       inputs:
+  #         artifactName: 'drop'
